@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import {UserWithId,Users, User, UserLocal} from "./user.model"
-import { InsertOneResult } from "mongodb";
+import { InsertOneResult, ObjectId } from "mongodb";
 import { ZodError } from "zod";
 
 
@@ -30,3 +30,14 @@ export const addUser = async (req: Request<{},UserWithId,User>, res: Response<Us
     }
 };
 
+export const deleteUser=async(req:Request<ObjectId>,res:Response,next:NextFunction)=>{
+
+       try{
+        const {id}=req.params
+        const response= await Users.findOneAndDelete({_id:new ObjectId(id)})
+        return res.status(200).json(response)
+       }catch(err){
+        next(err)
+       }
+  
+}
