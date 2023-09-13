@@ -7,5 +7,6 @@ const express_1 = __importDefault(require("express"));
 const user_handler_1 = require("./user.handler");
 const routerUser = express_1.default.Router();
 routerUser.route("/").get(user_handler_1.getAllUsers).post(user_handler_1.addUser);
+routerUser.route("/:id").delete(user_handler_1.deleteUser);
 exports.default = routerUser;
 //# sourceMappingURL=user.router.js.map

@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addUser = exports.getAllUsers = void 0;
+exports.deleteUser = exports.addUser = exports.getAllUsers = void 0;
 const user_model_1 = require("./user.model");
+const mongodb_1 = require("mongodb");
 const zod_1 = require("zod");
 const getAllUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -40,4 +41,15 @@ const addUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.addUser = addUser;
+const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const response = yield user_model_1.Users.findOneAndDelete({ _id: new mongodb_1.ObjectId(id) });
+        return res.status(200).json(response);
+    }
+    catch (err) {
+        next(err);
+    }
+});
+exports.deleteUser = deleteUser;
 //# sourceMappingURL=user.handler.js.map
