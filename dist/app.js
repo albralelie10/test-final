@@ -29,7 +29,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const user_router_1 = __importDefault(require("./api/user/user.router"));
 const express_1 = __importDefault(require("express"));
 const middlewares = __importStar(require("./middlewares"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)({
+    origin: "*",
+    methods: ["GET", "DELETE", "PUT", "POST", "OPTIONS"]
+}));
+app.use(express_1.default.urlencoded({ extended: false }));
 app.use(express_1.default.json());
 app.use("/users", user_router_1.default);
 app.use(middlewares.errorHandler);
