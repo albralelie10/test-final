@@ -1,13 +1,14 @@
 import request from "supertest";
 import app from "../../app"
-import { Users,UserWithId } from "./user.model";
+import { Users } from "./user.model";
 
 beforeAll(async () => {
     try {
       await Users.drop();
     } catch (error) {}
   });
-  
+
+
   describe('GET /users', () => {
     it('responds with an array of todos', async () =>
       request(app)
@@ -25,7 +26,6 @@ beforeAll(async () => {
 
   describe('POST /users', () => {
     it('response withc a Error if User is invalid', async () =>
-    
       request(app)
         .post('/users')
         .set('Accept', 'application/json')
@@ -50,16 +50,21 @@ beforeAll(async () => {
           nombre:"nidia",
           email:"nidia@test.com",
           age:22,
-          password:"112233"
+          password:"112233",
+          user_configId:{}
       })
         .expect('Content-Type', /json/)
         .expect(201)
         .then((response) => {
-          console.log(response.body)
           expect(response.body).toHaveProperty('_id')
         }),
     );
   });
+
+
+  
+
+  
 
 
 

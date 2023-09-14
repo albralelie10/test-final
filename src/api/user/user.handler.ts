@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express"
 import {UserWithId,Users, User, UserLocal} from "./user.model"
-import { InsertOneResult, ObjectId } from "mongodb";
+import {  ObjectId } from "mongodb";
 import { ZodError } from "zod";
 
 
 export const getAllUsers = async (req: Request, res: Response<UserWithId[] >, next:NextFunction) => {
     try{
-        const response =  Users.find();
+        const response =  await Users.find();
         const users = await response.toArray();
         return res.json(users);
     }catch(err){
@@ -14,11 +14,11 @@ export const getAllUsers = async (req: Request, res: Response<UserWithId[] >, ne
     }
 };
 
-
 export const addUser = async (req: Request<{},UserWithId,User>, res: Response<UserWithId>, next:NextFunction) => {
     try{
         const validateResult=await UserLocal.parse(req.body)
         const insertResult= await Users.insertOne(validateResult)
+        console.log(insertResult.acknowledged)
         if(!insertResult.acknowledged)throw new Error("Error inserting User")
         const insertUser=await Users.findOne({_id:insertResult.insertedId}) as UserWithId
         return res.status(201).json(insertUser) 
